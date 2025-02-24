@@ -108,7 +108,10 @@ fun WelcomeScreen(){
 
 
         //Login/Sign Up Button
-        LoginSignUpButton {}
+        LoginSignUpButton(
+            onClick = {},
+            text = "Login/SignUp"
+        )
 
 
 

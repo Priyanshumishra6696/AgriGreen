@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoginSignUpButton(onClick : () -> Unit){
+fun LoginSignUpButton(onClick : () -> Unit,text : String){
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp.dp
     val screenHeightDp = configuration.screenHeightDp.dp
@@ -38,7 +38,7 @@ fun LoginSignUpButton(onClick : () -> Unit){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Login/Sign Up",
+            text = text,
             color = Color.White,
             fontSize = 18.sp
         )

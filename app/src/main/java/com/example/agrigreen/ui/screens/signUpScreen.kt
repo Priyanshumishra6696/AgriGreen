@@ -24,7 +24,7 @@ import com.example.agrigreen.ui.components.InputField
 import com.example.agrigreen.ui.components.LoginSignUpButton
 
 @Composable
-fun LoginScreen(viewModel: AgriGreenViewModel){
+fun SignUpScreen(viewModel: AgriGreenViewModel){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +70,22 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
             )
         }
 
+        //Spacer
+        Spacer(modifier = Modifier.height(32.dp))
 
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            InputField(
+                viewModel,
+                "Enter Name",
+                false,
+                passBool = false,
+                nameBool = true)
+        }
 
         //Spacer
         Spacer(modifier = Modifier.height(32.dp))
@@ -106,7 +121,7 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
                 false,
                 passBool = true,
                 nameBool = false
-            )
+                )
         }
 
 
@@ -115,8 +130,8 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
 
 
         LoginSignUpButton(
-            text = "Login",
-            onClick = { }
+            onClick = {},
+            text = "SignUp"
         )
 
         //Spacer

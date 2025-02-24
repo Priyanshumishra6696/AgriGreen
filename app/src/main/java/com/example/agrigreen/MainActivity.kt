@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import com.example.agrigreen.ui.screens.LoginScreen
+import com.example.agrigreen.ui.screens.SignUpScreen
 import com.example.agrigreen.ui.screens.WelcomeScreen
 import com.example.agrigreen.ui.theme.AgriGreenTheme
 
@@ -25,7 +26,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             AgriGreenTheme {
 //                WelcomeScreen()
-                LoginScreen(viewModel)
+//                LoginScreen(viewModel)
+                SignUpScreen(viewModel)
             }
         }
     }

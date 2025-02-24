@@ -17,16 +17,20 @@ import com.example.agrigreen.ui.theme.ScreenWhite
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputField(
-    viewModel: AgriGreenViewModel
+    viewModel: AgriGreenViewModel,
+    text : String,
+    emailBool : Boolean,
+    passBool : Boolean,
+    nameBool : Boolean
 ){
     val configuration = LocalConfiguration.current
     val screenWidthDp = configuration.screenWidthDp.dp
     val screenHeightDp = configuration.screenHeightDp.dp
     TextField(
         modifier = Modifier.width(screenWidthDp-100.dp),
-        value = viewModel.emailEntered,
-        onValueChange = { viewModel.emailEntered=it },
-        label = { Text("Enter Email") },
+        value = if(emailBool) viewModel.emailEntered else if(passBool) viewModel.passEntered else viewModel.nameEntered,
+        onValueChange = { if(emailBool) viewModel.emailEntered=it else if(passBool) viewModel.passEntered=it else viewModel.nameEntered=it },
+        label = { Text(text) },
         colors = TextFieldDefaults.textFieldColors(
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,

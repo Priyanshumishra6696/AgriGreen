@@ -10,4 +10,5 @@ class AgriGreenViewModel : ViewModel() {
     //login activity handling
     var emailEntered by mutableStateOf("")
     var passEntered by mutableStateOf("")
+    var nameEntered by mutableStateOf("")
 }
