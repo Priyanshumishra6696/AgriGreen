@@ -18,13 +18,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.agrigreen.AgriGreenViewModel
 import com.example.agrigreen.ui.components.DarkGreenHeadingText
 import com.example.agrigreen.ui.components.InputField
 import com.example.agrigreen.ui.components.LoginSignUpButton
+import com.example.agrigreen.utils.LoginSignupNavigationItems
 
 @Composable
-fun LoginScreen(viewModel: AgriGreenViewModel){
+fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -116,7 +118,13 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
 
         LoginSignUpButton(
             text = "Login",
-            onClick = { }
+            onClick = {
+                viewModel.login(
+                    email = viewModel.emailEntered,
+                    password = viewModel.passEntered
+                )
+                navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
+            }
         )
 
         //Spacer
@@ -124,7 +132,7 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
 
 
 
-        //Not Now Button
+        //signup  Button
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -133,7 +141,7 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
             Text(
                 modifier = Modifier
                     .clickable {
-                        //TODO
+                        navController.navigate(LoginSignupNavigationItems.SignUpScreen.route)
                     },
                 text = "SignUp",
                 fontSize = 20.sp,
@@ -145,7 +153,7 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
         //Spacer
         Spacer(modifier = Modifier.height(32.dp))
 
-        //Not Now Button
+        //forgot pass Button
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -154,7 +162,7 @@ fun LoginScreen(viewModel: AgriGreenViewModel){
             Text(
                 modifier = Modifier
                     .clickable {
-                        //TODO
+
                     },
                 text = "Forgot Password?",
                 fontSize = 20.sp,

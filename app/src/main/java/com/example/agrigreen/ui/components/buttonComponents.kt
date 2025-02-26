@@ -32,7 +32,7 @@ fun LoginSignUpButton(onClick : () -> Unit,text : String){
             .clip(RoundedCornerShape(8.dp))
             .background(Color.Black)
             .clickable {
-                onClick
+                onClick()
             },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

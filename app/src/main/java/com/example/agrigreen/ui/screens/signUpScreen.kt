@@ -18,13 +18,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.agrigreen.AgriGreenViewModel
 import com.example.agrigreen.ui.components.DarkGreenHeadingText
 import com.example.agrigreen.ui.components.InputField
 import com.example.agrigreen.ui.components.LoginSignUpButton
+import com.example.agrigreen.utils.LoginSignupNavigationItems
 
 @Composable
-fun SignUpScreen(viewModel: AgriGreenViewModel){
+fun SignUpScreen(viewModel: AgriGreenViewModel,navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -130,7 +132,13 @@ fun SignUpScreen(viewModel: AgriGreenViewModel){
 
 
         LoginSignUpButton(
-            onClick = {},
+            onClick = {
+                viewModel.SignUp(
+                    email = viewModel.emailEntered,
+                    password = viewModel.passEntered
+                )
+                navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
+            },
             text = "SignUp"
         )
 

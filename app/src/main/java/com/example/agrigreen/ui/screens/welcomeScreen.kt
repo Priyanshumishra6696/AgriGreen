@@ -23,12 +23,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.agrigreen.AgriGreenViewModel
 import com.example.agrigreen.R
 import com.example.agrigreen.ui.components.DarkGreenHeadingText
 import com.example.agrigreen.ui.components.LoginSignUpButton
+import com.example.agrigreen.utils.LoginSignupNavigationItems
 
 @Composable
-fun WelcomeScreen(){
+fun WelcomeScreen(viewModel: AgriGreenViewModel,navController: NavController){
     //logic and params
 
     val configuration = LocalConfiguration.current
@@ -109,7 +112,7 @@ fun WelcomeScreen(){
 
         //Login/Sign Up Button
         LoginSignUpButton(
-            onClick = {},
+            onClick = {navController.navigate(LoginSignupNavigationItems.LoginScreen.route)},
             text = "Login/SignUp"
         )
 
@@ -132,7 +135,7 @@ fun WelcomeScreen(){
              Text(
                  modifier = Modifier
                      .clickable {
-                         //TODO
+                         navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
                      },
                  text = "Not Now",
                  fontSize = 20.sp,

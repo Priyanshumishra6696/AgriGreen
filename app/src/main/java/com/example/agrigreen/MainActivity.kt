@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
+import com.example.agrigreen.navigation.AgriGreenNav
 import com.example.agrigreen.ui.screens.LoginScreen
 import com.example.agrigreen.ui.screens.SignUpScreen
 import com.example.agrigreen.ui.screens.WelcomeScreen
@@ -25,9 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AgriGreenTheme {
-//                WelcomeScreen()
-//                LoginScreen(viewModel)
-                SignUpScreen(viewModel)
+                AgriGreenNav(viewModel)
             }
         }
     }
