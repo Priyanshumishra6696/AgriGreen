@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "636612671147",
+    "project_id": "agrigreen-a3797",
+    "storage_bucket": "agrigreen-a3797.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636612671147:android:17e2ce8bad7683797369ee",
+        "android_client_info": {
+          "package_name": "com.example.agrigreen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApKIvoCU0R1MVYO0HWLaXMfKGFWtGEDMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
