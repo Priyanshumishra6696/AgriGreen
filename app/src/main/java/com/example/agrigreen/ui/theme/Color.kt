@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val DarkGreen = Color(0,117,55)
 val ScreenWhite = Color(250,250,250)
+val ParrotGreen = Color(128,201,66)
