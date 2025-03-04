@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.agrigreen.AgriGreenViewModel
 import com.example.agrigreen.R
+import com.example.agrigreen.ui.components.BottomNavigationBar
 import com.example.agrigreen.ui.theme.DarkGreen
 import com.example.agrigreen.ui.theme.ParrotGreen
 import com.example.agrigreen.ui.theme.ScreenWhite
@@ -60,6 +61,7 @@ fun HomeScreen(viewModel: AgriGreenViewModel,navController: NavController){
                 BottomSection(viewModel,navController)
             }
         }
+        BottomNavigationBar(viewModel,navController)
     }
 }
 
