@@ -6,7 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.ai.client.generativeai.GenerativeModel
 import com.google.firebase.auth.FirebaseAuth
+
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AgriGreenViewModel : ViewModel() {
 
@@ -68,6 +74,34 @@ class AgriGreenViewModel : ViewModel() {
         auth.signOut()
         _authState.value = AuthState.UnAuthenticated
     }
+
+    //GEMINI Integration
+
+    val apiKey = "AIzaSyDGqEIBMJfu9VbTHBtkXjxjKIPPK1RQhCw"
+    val model = GenerativeModel(
+        "gemini-2.0-flash",
+        // Retrieve API key as an environmental variable defined in a Build Configuration
+        // see https://github.com/google/secrets-gradle-plugin for further instructions
+        apiKey
+    )
+
+//    val chatHistory = listOf(
+//    )
+
+    val chat = model.startChat()
+
+    // Note that sendMessage() is a suspend function and should be called from
+    // a coroutine scope or another suspend function
+    suspend fun getResponseFromGemini(input : String): String? {
+        return withContext(Dispatchers.IO) {
+            chat.sendMessage(input).text
+        }
+    }
+
+
+
+
+
 }
 
 
