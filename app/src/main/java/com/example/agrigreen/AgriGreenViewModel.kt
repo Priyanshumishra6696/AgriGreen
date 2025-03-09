@@ -1,17 +1,16 @@
 package com.example.agrigreen
 
+import androidx.compose.runtime.currentCompositionErrors
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.GenerativeModel
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class AgriGreenViewModel : ViewModel() {
@@ -35,6 +34,9 @@ class AgriGreenViewModel : ViewModel() {
         }else{
             _authState.value = AuthState.Authenticated
         }
+    }
+    fun checkIfLoginFailed() : Boolean{
+        return _authState.value==AuthState.UnAuthenticated
     }
 
     fun login(email : String,password : String){
@@ -75,6 +77,14 @@ class AgriGreenViewModel : ViewModel() {
         _authState.value = AuthState.UnAuthenticated
     }
 
+    //checking if user is already logged in
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    fun checkLoginStatus() : Boolean{
+        return if(currentUser!=null) true
+        else false
+    }
+
+
     //GEMINI Integration
 
     val apiKey = "AIzaSyDGqEIBMJfu9VbTHBtkXjxjKIPPK1RQhCw"
@@ -85,9 +95,7 @@ class AgriGreenViewModel : ViewModel() {
         apiKey
     )
 
-//    val chatHistory = listOf(
-//    )
-
+    val chatHistory = MutableLiveData<MutableList<String>>(mutableListOf())
     val chat = model.startChat()
 
     // Note that sendMessage() is a suspend function and should be called from
@@ -97,10 +105,6 @@ class AgriGreenViewModel : ViewModel() {
             chat.sendMessage(input).text
         }
     }
-
-
-
-
 
 }
 

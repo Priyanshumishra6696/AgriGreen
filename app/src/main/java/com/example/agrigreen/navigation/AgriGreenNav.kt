@@ -22,7 +22,11 @@ fun AgriGreenNav(viewModel: AgriGreenViewModel){
 
     NavHost(
         navController = navController,
-        startDestination = LoginSignupNavigationItems.WelcomeScreen.route,
+        startDestination = if(viewModel.checkLoginStatus()){
+                LoginSignupNavigationItems.HomeScreen.route
+            }else{
+                LoginSignupNavigationItems.WelcomeScreen.route
+             },
         builder = {
             composable(LoginSignupNavigationItems.WelcomeScreen.route){
                 WelcomeScreen(viewModel,navController)

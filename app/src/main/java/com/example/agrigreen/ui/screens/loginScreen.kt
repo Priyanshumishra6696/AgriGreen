@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -20,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.agrigreen.AgriGreenViewModel
+import com.example.agrigreen.AuthState
 import com.example.agrigreen.ui.components.DarkGreenHeadingText
 import com.example.agrigreen.ui.components.InputField
 import com.example.agrigreen.ui.components.LoginSignUpButton
@@ -27,6 +31,7 @@ import com.example.agrigreen.utils.LoginSignupNavigationItems
 
 @Composable
 fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
+    val authState by viewModel.authState.observeAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -123,7 +128,9 @@ fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
                     email = viewModel.emailEntered,
                     password = viewModel.passEntered
                 )
-                navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
+//                if(viewModel.checkLoginStatus()){
+//                    navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
+//                }
             }
         )
 
@@ -169,6 +176,11 @@ fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
                 style = TextStyle(textDecoration = TextDecoration.Underline),
                 fontWeight = FontWeight.Bold
             )
+        }
+    }
+    LaunchedEffect(authState) {
+        if(authState==AuthState.Authenticated){
+            navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
         }
     }
 }
