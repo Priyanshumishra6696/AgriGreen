@@ -1,5 +1,6 @@
 package com.example.agrigreen
 
+import android.util.Log
 import androidx.compose.runtime.currentCompositionErrors
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -53,7 +55,7 @@ class AgriGreenViewModel : ViewModel() {
                     _authState.value = AuthState.Error(task.exception?.message?:"SomeThing went Wrong")
                 }
             }
-
+        loadChatHistory()
     }
 
     fun SignUp(email : String,password : String){
@@ -75,6 +77,7 @@ class AgriGreenViewModel : ViewModel() {
     fun SignOut(){
         auth.signOut()
         _authState.value = AuthState.UnAuthenticated
+        chatHistory.value = mutableListOf()
     }
 
     //checking if user is already logged in
@@ -86,7 +89,9 @@ class AgriGreenViewModel : ViewModel() {
 
 
     //GEMINI Integration
-
+    //using firestore to store chats of each user
+    private val db = FirebaseFirestore.getInstance()
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
     val apiKey = "AIzaSyDGqEIBMJfu9VbTHBtkXjxjKIPPK1RQhCw"
     val model = GenerativeModel(
         "gemini-2.0-flash",
@@ -100,9 +105,36 @@ class AgriGreenViewModel : ViewModel() {
     val QueryHistory = MutableLiveData<MutableList<String>>(mutableListOf())
     val chat = model.startChat()
     fun addMessageToChatHistory(query:String ,message: String) {
+        val chatRef = db.collection("users").document(userId).collection("chats")
+        val chatData = hashMapOf(
+            "query" to query,
+            "message" to message,
+            "timestamp" to System.currentTimeMillis()
+        )
+
+        chatRef.add(chatData)
+            .addOnSuccessListener { Log.d("Firestore", "Chat saved successfully!") }
+            .addOnFailureListener { e -> Log.e("Firestore", "Error saving chat", e) }
+
+        // Update local LiveData
         chatHistory.value = (chatHistory.value ?: mutableListOf()).apply {
             add(query to message)
         }
+    }
+    fun loadChatHistory() {
+        db.collection("users").document(userId).collection("chats")
+            .orderBy("timestamp")
+            .get()
+            .addOnSuccessListener { documents ->
+                val chats = mutableListOf<Pair<String, String>>()
+                for (doc in documents) {
+                    val query = doc.getString("query") ?: ""
+                    val message = doc.getString("message") ?: ""
+                    chats.add(query to message)
+                }
+                chatHistory.value = chats
+            }
+            .addOnFailureListener { e -> Log.e("Firestore", "Error loading chat", e) }
     }
 
 
