@@ -50,7 +50,9 @@ fun HomeScreen(viewModel: AgriGreenViewModel,navController: NavController){
             .fillMaxSize()
             .padding(top = 16.dp)
     ) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.weight(1f)
+        ) {
             item {
                 TopBar(viewModel,navController)
             }

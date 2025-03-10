@@ -94,17 +94,32 @@ class AgriGreenViewModel : ViewModel() {
         // see https://github.com/google/secrets-gradle-plugin for further instructions
         apiKey
     )
+    val isRequestOngoing = MutableLiveData(false)
 
-    val chatHistory = MutableLiveData<MutableList<String>>(mutableListOf())
+    val chatHistory = MutableLiveData<MutableList<Pair<String,String>>>(mutableListOf())
+    val QueryHistory = MutableLiveData<MutableList<String>>(mutableListOf())
     val chat = model.startChat()
+    fun addMessageToChatHistory(query:String ,message: String) {
+        chatHistory.value = (chatHistory.value ?: mutableListOf()).apply {
+            add(query to message)
+        }
+    }
+
 
     // Note that sendMessage() is a suspend function and should be called from
     // a coroutine scope or another suspend function
-    suspend fun getResponseFromGemini(input : String): String? {
-        return withContext(Dispatchers.IO) {
-            chat.sendMessage(input).text
+    suspend fun getResponseFromGemini(input : String){
+        try {
+            isRequestOngoing.postValue(true)
+            val reponsetext = chat.sendMessage(input).text
+            if (reponsetext != null) {
+                addMessageToChatHistory(input,reponsetext)
+            }
+        }finally {
+            isRequestOngoing.postValue(false)
         }
     }
+
 
 }
 
