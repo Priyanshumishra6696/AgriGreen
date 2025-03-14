@@ -133,7 +133,7 @@ fun SignUpScreen(viewModel: AgriGreenViewModel,navController: NavController){
 
         LoginSignUpButton(
             onClick = {
-                viewModel.SignUp(
+                viewModel.PerformSignUp(
                     email = viewModel.emailEntered,
                     password = viewModel.passEntered
                 )

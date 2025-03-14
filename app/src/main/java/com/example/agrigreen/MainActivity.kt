@@ -4,19 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.agrigreen.navigation.AgriGreenNav
 import com.example.agrigreen.ui.theme.AgriGreenTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val viewModel = ViewModelProvider(this)[AgriGreenViewModel::class.java]
+//        val viewModel = ViewModelProvider(this)[AgriGreenViewModel::class.java]
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             AgriGreenTheme {
-                AgriGreenNav(viewModel)
+                AgriGreenNav()
             }
         }
     }

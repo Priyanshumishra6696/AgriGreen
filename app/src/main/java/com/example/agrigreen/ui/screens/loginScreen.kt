@@ -9,13 +9,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -23,15 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.agrigreen.AgriGreenViewModel
-import com.example.agrigreen.AuthState
+import com.example.agrigreen.firebase.AuthState
 import com.example.agrigreen.ui.components.DarkGreenHeadingText
 import com.example.agrigreen.ui.components.InputField
 import com.example.agrigreen.ui.components.LoginSignUpButton
 import com.example.agrigreen.utils.LoginSignupNavigationItems
+import com.google.rpc.context.AttributeContext.Auth
 
 @Composable
 fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
     val authState by viewModel.authState.observeAsState()
+    var loginFailed by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -96,6 +104,13 @@ fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
                 passBool = false,
                 nameBool = false
             )
+            if(loginFailed){
+                Text(
+                    text = "failed",
+                    color = Color.Red
+                )
+            }
+
         }
 
 
@@ -124,7 +139,7 @@ fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
         LoginSignUpButton(
             text = "Login",
             onClick = {
-                viewModel.login(
+                viewModel.PerformLogin(
                     email = viewModel.emailEntered,
                     password = viewModel.passEntered
                 )
@@ -178,9 +193,26 @@ fun LoginScreen(viewModel: AgriGreenViewModel,navController: NavController){
             )
         }
     }
-    LaunchedEffect(authState) {
-        if(authState==AuthState.Authenticated){
-            navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
+
+    LaunchedEffect(authState){
+        when(authState){
+            is AuthState.Authenticated -> {
+                navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
+            }
+            is AuthState.Error -> {
+                loginFailed=true
+            }
+            AuthState.Loading -> {
+            }
+            AuthState.UnAuthenticated -> {
+            }
+            null -> {
+            }
         }
     }
+//    LaunchedEffect(authState) {
+//        if(authState==AuthState.Authenticated){
+//            navController.navigate(LoginSignupNavigationItems.HomeScreen.route)
+//        }
+//    }
 }

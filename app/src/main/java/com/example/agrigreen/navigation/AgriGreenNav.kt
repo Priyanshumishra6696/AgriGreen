@@ -2,6 +2,7 @@ package com.example.agrigreen.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,7 +18,8 @@ import com.example.agrigreen.utils.HomeBottomNavigationItems
 import com.example.agrigreen.utils.LoginSignupNavigationItems
 
 @Composable
-fun AgriGreenNav(viewModel: AgriGreenViewModel){
+fun AgriGreenNav(){
+    val viewModel : AgriGreenViewModel = hiltViewModel()
     val navController = rememberNavController()
 
     NavHost(

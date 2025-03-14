@@ -23,7 +23,7 @@ fun ProfileScreem(viewModel: AgriGreenViewModel,navController: NavController){
     ) {
         Button(
             onClick = {
-                viewModel.SignOut()
+                viewModel.PerformSignOut()
                 navController.navigate(LoginSignupNavigationItems.WelcomeScreen.route)
             }
         ) {
