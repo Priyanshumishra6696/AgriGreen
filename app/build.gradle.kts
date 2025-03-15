@@ -84,4 +84,10 @@ dependencies {
 
     //Gemini integration
     implementation(libs.generativeai)
+
+    //ai model integration
+    implementation("org.tensorflow:tensorflow-lite:2.13.0")
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.metadata)
+
 }
