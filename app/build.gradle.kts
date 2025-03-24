@@ -86,5 +86,16 @@ dependencies {
     implementation(libs.generativeai)
 
     //tensorflow
+//    implementation("org.tensorflow:tensorflow-lite-task-vision:2.9.0") // For image-based models
+//    implementation("org.tensorflow:tensorflow-lite-task-text:2.9.0")   // For text-based models
+//    implementation("org.tensorflow:tensorflow-lite-support:2.9.0")     // For general TFLite support
+// TensorFlow Lite Task Library (for vision models)
+    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.4") // Latest stable version
+
+    // TensorFlow Lite Task Library (for text models)
+    implementation("org.tensorflow:tensorflow-lite-task-text:0.4.4") // Latest stable version
+
+    // TensorFlow Lite Support Library (for pre/post-processing)
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4") // Latest stable version
 //    implementation("org.tensorflow:tensorflow-core-platform:0.3.1")
 }
