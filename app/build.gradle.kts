@@ -84,4 +84,7 @@ dependencies {
 
     //Gemini integration
     implementation(libs.generativeai)
+
+    //tensorflow
+//    implementation("org.tensorflow:tensorflow-core-platform:0.3.1")
 }
