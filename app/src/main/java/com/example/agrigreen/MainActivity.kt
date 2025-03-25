@@ -29,21 +29,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
 import com.example.agrigreen.model.PlantDiseaseClassifier
+import com.example.agrigreen.navigation.AgriGreenNav
 import com.example.agrigreen.ui.theme.AgriGreenTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         try {
             val viewModel = ViewModelProvider(this)[AgriGreenViewModel::class.java]
-
             super.onCreate(savedInstanceState)
             enableEdgeToEdge()
             setContent {
                 AgriGreenTheme {
+
                     PlantDiseaseScreen(
                         context = this
                     )
-//                AgriGreenNav(viewModel)
+//                    AgriGreenNav(viewModel)
                 }
             }
         } catch (e: Exception) {
@@ -65,7 +66,7 @@ fun PlantDiseaseScreen(context: Context) {
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.tomatoleaftesting), // Replace with your image
+            painter = painterResource(id = R.drawable.grapeleafblight), // Replace with your image
             contentDescription = "Leaf Image",
             modifier = Modifier.size(200.dp)
         )
@@ -73,7 +74,7 @@ fun PlantDiseaseScreen(context: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            result = classifier.classifyImage(R.drawable.tomatoleaftesting) // Pass the image ID
+            result = classifier.classifyImage(R.drawable.grapeleafblight) // Pass the image ID
         }) {
             Text("Analyze Image")
         }
@@ -83,3 +84,5 @@ fun PlantDiseaseScreen(context: Context) {
         Text(text = result, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     }
 }
+
+
