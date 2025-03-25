@@ -66,7 +66,7 @@ fun PlantDiseaseScreen(context: Context) {
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.grapeleafblight), // Replace with your image
+            painter = painterResource(id = R.drawable.tomatotesting), // Replace with your image
             contentDescription = "Leaf Image",
             modifier = Modifier.size(200.dp)
         )
@@ -74,7 +74,7 @@ fun PlantDiseaseScreen(context: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            result = classifier.classifyImage(R.drawable.grapeleafblight) // Pass the image ID
+            result = classifier.classifyImage(R.drawable.tomatotesting) // Pass the image ID
         }) {
             Text("Analyze Image")
         }
