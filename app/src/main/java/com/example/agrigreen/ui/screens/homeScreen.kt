@@ -1,7 +1,12 @@
 package com.example.agrigreen.ui.screens
 
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,6 +47,8 @@ import com.example.agrigreen.ui.components.BottomNavigationBar
 import com.example.agrigreen.ui.theme.DarkGreen
 import com.example.agrigreen.ui.theme.ParrotGreen
 import com.example.agrigreen.ui.theme.ScreenWhite
+import com.example.agrigreen.utils.CaptureImageFromCamera
+import com.example.agrigreen.utils.PickImageFromGallery
 
 @Composable
 fun HomeScreen(viewModel: AgriGreenViewModel,navController: NavController){
@@ -149,6 +156,17 @@ fun MiddleSection(viewModel: AgriGreenViewModel,navController: NavController){
 
 @Composable
 fun BottomSection(viewModel: AgriGreenViewModel,navController: NavController){
+    val pickMedia = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        // Callback is invoked after the user selects a media item or closes the
+        // photo picker.
+        if (uri != null) {
+            viewModel.ImageUri = uri
+            navController.navigate("Plant")
+            Log.d("PhotoPicker", "Selected URI: $uri")
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -204,7 +222,10 @@ fun BottomSection(viewModel: AgriGreenViewModel,navController: NavController){
                 navController = navController,
                 text1 = "Take a Picture",
                 text2 = "of your plant",
-                IconImgVector = Icons.Default.CameraAlt
+                IconImgVector = Icons.Default.CameraAlt,
+                onClick = {
+//                    CaptureImageFromCamera()
+                }
             )
         }
         //button to import from gallery
@@ -217,20 +238,31 @@ fun BottomSection(viewModel: AgriGreenViewModel,navController: NavController){
                 navController = navController,
                 text1 = "Import",
                 text2 = "From Gallery",
-                IconImgVector = Icons.Default.ImportExport
+                IconImgVector = Icons.Default.ImportExport,
+                onClick = {
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
             )
         }
     }
 }
 
 @Composable
-fun ImageSelectionButton(viewModel: AgriGreenViewModel,navController: NavController,text1: String,text2: String,IconImgVector: ImageVector){
+fun ImageSelectionButton(viewModel: AgriGreenViewModel,
+                         navController: NavController,
+                         text1: String, text2: String,
+                         IconImgVector: ImageVector,
+                         onClick: () -> Unit,
+){
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(ParrotGreen)
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable {
+                onClick()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(

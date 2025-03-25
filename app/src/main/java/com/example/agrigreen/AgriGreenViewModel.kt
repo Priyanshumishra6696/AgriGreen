@@ -1,5 +1,6 @@
 package com.example.agrigreen
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.currentCompositionErrors
 import androidx.compose.runtime.getValue
@@ -16,6 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class AgriGreenViewModel : ViewModel() {
+
+    var ImageUri by mutableStateOf<Uri?>(null)
 
     //login activity handling
     var emailEntered by mutableStateOf("")

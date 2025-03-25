@@ -98,4 +98,7 @@ dependencies {
     // TensorFlow Lite Support Library (for pre/post-processing)
     implementation("org.tensorflow:tensorflow-lite-support:0.4.4") // Latest stable version
 //    implementation("org.tensorflow:tensorflow-core-platform:0.3.1")
+
+    //coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
 }

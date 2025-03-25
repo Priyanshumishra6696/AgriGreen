@@ -1,12 +1,12 @@
 package com.example.agrigreen
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,11 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModelProvider
+import coil.compose.AsyncImage
 import com.example.agrigreen.model.PlantDiseaseClassifier
 import com.example.agrigreen.navigation.AgriGreenNav
 import com.example.agrigreen.ui.theme.AgriGreenTheme
@@ -41,10 +41,10 @@ class MainActivity : ComponentActivity() {
             setContent {
                 AgriGreenTheme {
 
-                    PlantDiseaseScreen(
-                        context = this
-                    )
-//                    AgriGreenNav(viewModel)
+//                    PlantDiseaseScreen(
+//                        context = this
+//                    )
+                    AgriGreenNav(viewModel,this)
                 }
             }
         } catch (e: Exception) {
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun PlantDiseaseScreen(context: Context) {
+fun PlantDiseaseScreen(viewModel: AgriGreenViewModel,context: Context) {
     val classifier = remember { PlantDiseaseClassifier(context) }
     var result by remember { mutableStateOf("Click to analyze image") }
 
@@ -65,16 +65,13 @@ fun PlantDiseaseScreen(context: Context) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.tomatotesting), // Replace with your image
-            contentDescription = "Leaf Image",
-            modifier = Modifier.size(200.dp)
-        )
+        DisplayImageFromUri(viewModel.ImageUri)
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            result = classifier.classifyImage(R.drawable.tomatotesting) // Pass the image ID
+            result =
+                viewModel.ImageUri?.let { classifier.classifyImage(it) }.toString() // Pass the image ID
         }) {
             Text("Analyze Image")
         }
@@ -82,6 +79,20 @@ fun PlantDiseaseScreen(context: Context) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(text = result, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+    }
+}
+
+
+@Composable
+fun DisplayImageFromUri(imageUri: Uri?) {
+    if (imageUri != null) {
+        AsyncImage(
+            model = imageUri,
+            contentDescription = "Selected Image",
+            modifier = Modifier.size(200.dp) // Adjust as needed
+        )
+    } else {
+        Text("No image selected")
     }
 }
 

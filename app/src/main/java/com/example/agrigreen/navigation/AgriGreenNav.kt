@@ -1,11 +1,13 @@
 package com.example.agrigreen.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.agrigreen.AgriGreenViewModel
+import com.example.agrigreen.PlantDiseaseScreen
 import com.example.agrigreen.ui.screens.ChatBotScreen
 import com.example.agrigreen.ui.screens.GovtSchemesScreen
 import com.example.agrigreen.ui.screens.HomeScreen
@@ -17,7 +19,7 @@ import com.example.agrigreen.utils.HomeBottomNavigationItems
 import com.example.agrigreen.utils.LoginSignupNavigationItems
 
 @Composable
-fun AgriGreenNav(viewModel: AgriGreenViewModel){
+fun AgriGreenNav(viewModel: AgriGreenViewModel,context: Context){
     val navController = rememberNavController()
 
     NavHost(
@@ -48,6 +50,9 @@ fun AgriGreenNav(viewModel: AgriGreenViewModel){
             }
             composable(HomeBottomNavigationItems.ProfileScreen.route){
                 ProfileScreem(viewModel,navController)
+            }
+            composable("Plant") {
+                PlantDiseaseScreen(viewModel,context)
             }
         }
     )
