@@ -67,48 +67,82 @@ fun ChatBotScreen(viewModel: AgriGreenViewModel,navController: NavController){
                 }
             }
             if (isRequestOngoing==false){
-                chatToBeDisplayed?.forEachIndexed { index, pair ->
-                    item {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.End
-                        ) {
-                            Spacer(
-                                modifier = Modifier
-                                    .weight(0.5f)
-                            )
-                            Row(
-                                modifier = Modifier
-                                    .weight(0.5f)
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .background(Color.LightGray)
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .padding(8.dp),
-                                    text = pair.first,
-                                    fontSize = 17.sp
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Row {
-                            Text(
-                                text = pair.second,
-                                fontSize = 17.sp
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-//                        Divider(
-//                            color = Color.Black,
-//                            thickness = 8.dp
+                item {
+//                    Spacer(modifier = Modifier.height(16.dp))
+//                    Row(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        horizontalArrangement = Arrangement.End
+//                    ) {
+//                        Spacer(
+//                            modifier = Modifier
+//                                .weight(0.5f)
 //                        )
+//                        Row(
+//                            modifier = Modifier
+//                                .weight(0.5f)
+//                                .clip(RoundedCornerShape(16.dp))
+//                                .background(Color.LightGray)
+//                        ) {
+//                            Text(
+//                                modifier = Modifier
+//                                    .padding(8.dp),
+//                                text = pair.first,
+//                                fontSize = 17.sp
+//                            )
+//                        }
+//                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row {
+                        Text(
+                            text = viewModel.currresponse,
+                            fontSize = 17.sp
+                        )
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
+//                chatToBeDisplayed?.forEachIndexed { index, pair ->
+//                    item {
+//                        Spacer(modifier = Modifier.height(16.dp))
+//                        Row(
+//                            modifier = Modifier.fillMaxWidth(),
+//                            verticalAlignment = Alignment.CenterVertically,
+//                            horizontalArrangement = Arrangement.End
+//                        ) {
+//                            Spacer(
+//                                modifier = Modifier
+//                                    .weight(0.5f)
+//                            )
+//                            Row(
+//                                modifier = Modifier
+//                                    .weight(0.5f)
+//                                    .clip(RoundedCornerShape(16.dp))
+//                                    .background(Color.LightGray)
+//                            ) {
+//                                Text(
+//                                    modifier = Modifier
+//                                        .padding(8.dp),
+//                                    text = pair.first,
+//                                    fontSize = 17.sp
+//                                )
+//                            }
+//                        }
+//                        Spacer(modifier = Modifier.height(16.dp))
+//                        Row {
+//                            Text(
+//                                text = pair.second,
+//                                fontSize = 17.sp
+//                            )
+//                        }
+//                        Spacer(modifier = Modifier.height(16.dp))
+////                        Divider(
+////                            color = Color.Black,
+////                            thickness = 8.dp
+////                        )
+//                    }
+//                }
             }
-            if(chatToBeDisplayed.isNullOrEmpty()){
+            if(viewModel.currresponse.isNullOrEmpty()){
                 item {
                     Text(
                         text = "What Can I Do",
@@ -159,9 +193,11 @@ fun chatBotBottomSection(viewModel: AgriGreenViewModel){
         Button(
             modifier = Modifier,
             onClick = {
+                viewModel.currinput = text
                 couroutineScope.launch {
-                    viewModel.getResponseFromGemini(input = text)
+                    viewModel.getResponseFromGemini(input = viewModel.currinput)
                 }
+                text = ""
             },
             colors = ButtonColors(
                 containerColor = ScreenWhite,
