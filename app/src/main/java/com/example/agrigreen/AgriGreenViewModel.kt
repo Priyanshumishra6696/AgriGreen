@@ -2,19 +2,16 @@ package com.example.agrigreen
 
 import android.net.Uri
 import android.util.Log
-import androidx.compose.runtime.currentCompositionErrors
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.ai.client.generativeai.GenerativeModel
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class AgriGreenViewModel : ViewModel() {
 
@@ -38,6 +35,11 @@ class AgriGreenViewModel : ViewModel() {
             _authState.value = AuthState.UnAuthenticated
         }else{
             _authState.value = AuthState.Authenticated
+            auth.currentUser?.uid?.let {
+                getUserFromFirestore(
+                    userId = it
+                )
+            }
         }
     }
     fun checkIfLoginFailed() : Boolean{
@@ -53,7 +55,13 @@ class AgriGreenViewModel : ViewModel() {
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener{task->
                 if(task.isSuccessful){
+                    val currUserId = auth.currentUser?.uid
                     _authState.value = AuthState.Authenticated
+                    if (currUserId != null) {
+                        getUserFromFirestore(
+                            currUserId
+                        )
+                    }
                 }else{
                     _authState.value = AuthState.Error(task.exception?.message?:"SomeThing went Wrong")
                 }
@@ -70,17 +78,60 @@ class AgriGreenViewModel : ViewModel() {
         auth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener{task->
                 if(task.isSuccessful){
+                    val user = auth.currentUser
+                    user?.let {
+                        saveUserToFirestore(nameEntered,emailEntered,it.uid)
+                    }
                     _authState.value = AuthState.Authenticated
                 }else{
                     _authState.value = AuthState.Error(task.exception?.message?:"SomeThing went Wrong")
                 }
             }
     }
+    fun getUserFromFirestore(userId: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val name = document.getString("name")
+                    if (name != null) {
+                        nameEntered = name
+                    }
+                } else {
+                    nameEntered = ""
+                }
+            }
+            .addOnFailureListener {
+                nameEntered = ""
+            }
+    }
+    fun saveUserToFirestore(name:String , email:String,userId : String){
+        val db = FirebaseFirestore.getInstance()
+        val userMap = hashMapOf(
+            "name" to name,
+            "email" to email
+        )
+        db.collection("users").document(userId)
+            .set(userMap)
+            .addOnSuccessListener {
+                Log.d("Tag","User added succesfully")
+            }
+            .addOnFailureListener{ e ->
+                Log.d("Tag","Error saving user : $e ")
+            }
+    }
+
+
 
     fun SignOut(){
         auth.signOut()
         _authState.value = AuthState.UnAuthenticated
         chatHistory.value = mutableListOf()
+        nameEntered = ""
+        emailEntered = ""
+        passEntered = ""
     }
 
     //checking if user is already logged in
@@ -106,6 +157,8 @@ class AgriGreenViewModel : ViewModel() {
 
     val chatHistory = MutableLiveData<MutableList<Pair<String,String>>>(mutableListOf())
     val QueryHistory = MutableLiveData<MutableList<String>>(mutableListOf())
+    var currresponse by  mutableStateOf("")
+    var currinput by mutableStateOf("")
     val chat = model.startChat()
     fun addMessageToChatHistory(query:String ,message: String) {
         val chatRef = db.collection("users").document(userId).collection("chats")
@@ -149,6 +202,7 @@ class AgriGreenViewModel : ViewModel() {
             val reponsetext = chat.sendMessage(input).text
             if (reponsetext != null) {
                 addMessageToChatHistory(input,reponsetext)
+                currresponse = reponsetext
             }
         }finally {
             isRequestOngoing.postValue(false)

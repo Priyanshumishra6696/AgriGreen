@@ -59,7 +59,7 @@ fun ProfileScreem(viewModel: AgriGreenViewModel,navController: NavController){
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = "Priyanshu",
+                    text = if(viewModel.nameEntered!=""){viewModel.nameEntered}else{"Anonymous"},
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
