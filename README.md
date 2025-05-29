@@ -15,12 +15,19 @@ AgriGreen is an intelligent Android application designed to assist farmers in id
 
 🛠️ Tech Stack
 	•	Language: Kotlin
+ 
 	•	UI Framework: Jetpack Compose
+ 
 	•	Architecture: MVVM
+ 
 	•	Database: Firebase
+ 
 	•	AI/ML: TensorFlow Lite, Deep Learning
+ 
 	•	Authentication: Firebase Auth
+ 
 	•	Others: Dagger Hilt, Navigation Component
+ 
 
 ⸻
 
