@@ -38,10 +38,10 @@ Model runs on-device with TFLite, allowing disease detection without constant in
 ## 🚀 Screenshots
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/5534c92b-0609-4f56-9bae-d615ec9aaee5" width="250"/>
-  <img src="https://github.com/user-attachments/assets/89ecce73-041d-4391-963e-8f4149cd4fd3" width="250"/>
-  <img src="https://github.com/user-attachments/assets/e5db8de7-d812-4475-9c10-abd5183dfb9c" width="250"/>
   <img src="https://github.com/user-attachments/assets/9156340e-bf4b-48f9-8112-bb036e626f34" width="250"/>
+  <img src="https://github.com/user-attachments/assets/89ecce73-041d-4391-963e-8f4149cd4fd3" width="250"/>
+  <img src="https://github.com/user-attachments/assets/5534c92b-0609-4f56-9bae-d615ec9aaee5" width="250"/>
+  <img src="https://github.com/user-attachments/assets/e5db8de7-d812-4475-9c10-abd5183dfb9c" width="250"/>
 </p>
 
 ---
